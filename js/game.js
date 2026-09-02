@@ -1,13 +1,19 @@
 // ==========================================
 // TELECOM SIMULATOR - GAME.JS
-// Versão 1.0 - Base do jogo
+// Versão 1.0 - Sistema de interface
 // ==========================================
 
-// Estado básico do jogo
+
+// ==========================================
+// ESTADO DO JOGO
+// ==========================================
+
 const gameState = {
     running: false,
     minimized: false,
     maximized: false,
+
+    currentTab: "empresa",
 
     company: {
         name: "",
@@ -31,6 +37,8 @@ const gameState = {
 const gameWindow = document.getElementById("game-window");
 const mainMenu = document.getElementById("main-menu");
 const gameInterface = document.getElementById("game-interface");
+const navigationTabs = document.getElementById("navigation-tabs");
+const contentArea = document.getElementById("content-area");
 
 const playButton = document.getElementById("play-button");
 const newGameButton = document.getElementById("new-game-button");
@@ -45,21 +53,323 @@ const closeButton = document.getElementById("close");
 
 
 // ==========================================
-// FUNÇÕES DE TELA
+// ABAS
+// ==========================================
+
+const tabs = [
+    {
+        id: "empresa",
+        name: "Empresa",
+        image: "assets/tabs/tab_empresa.png"
+    },
+
+    {
+        id: "rede",
+        name: "Rede",
+        image: "assets/tabs/tab_rede.png"
+    },
+
+    {
+        id: "clientes",
+        name: "Clientes",
+        image: "assets/tabs/tab_clientes.png"
+    },
+
+    {
+        id: "financas",
+        name: "Finanças",
+        image: "assets/tabs/tab_financas.png"
+    },
+
+    {
+        id: "planos",
+        name: "Planos",
+        image: "assets/tabs/tab_planos.png"
+    },
+
+    {
+        id: "funcionarios",
+        name: "Funcionários",
+        image: "assets/tabs/tab_funcionarios.png"
+    },
+
+    {
+        id: "marketing",
+        name: "Marketing",
+        image: "assets/tabs/tab_marketing.png"
+    },
+
+    {
+        id: "tecnologia",
+        name: "Tecnologia",
+        image: "assets/tabs/tab_tecnologia.png"
+    },
+
+    {
+        id: "estatisticas",
+        name: "Estatísticas",
+        image: "assets/tabs/tab_estatisticas.png"
+    },
+
+    {
+        id: "noticias",
+        name: "Notícias",
+        image: "assets/tabs/tab_noticias.png"
+    },
+
+    {
+        id: "ma",
+        name: "M&A",
+        image: "assets/tabs/tab_ma.png"
+    }
+];
+
+
+// ==========================================
+// CRIAR ABAS
+// ==========================================
+
+function createTabs() {
+
+    navigationTabs.innerHTML = "";
+
+    tabs.forEach(tab => {
+
+        const button = document.createElement("button");
+
+        button.className = "navigation-tab";
+
+        button.dataset.tab = tab.id;
+
+        button.title = tab.name;
+
+        button.style.backgroundImage =
+            `url("${tab.image}")`;
+
+        button.addEventListener(
+            "click",
+            () => selectTab(tab.id)
+        );
+
+        navigationTabs.appendChild(button);
+    });
+
+    selectTab(gameState.currentTab);
+}
+
+
+// ==========================================
+// SELECIONAR ABA
+// ==========================================
+
+function selectTab(tabId) {
+
+    gameState.currentTab = tabId;
+
+    const tabButtons =
+        document.querySelectorAll(".navigation-tab");
+
+    tabButtons.forEach(button => {
+
+        button.classList.toggle(
+            "active",
+            button.dataset.tab === tabId
+        );
+    });
+
+    showTabContent(tabId);
+}
+
+
+// ==========================================
+// CONTEÚDO DAS ABAS
+// ==========================================
+
+function showTabContent(tabId) {
+
+    const tab = tabs.find(
+        item => item.id === tabId
+    );
+
+    if (!tab) {
+        return;
+    }
+
+    contentArea.innerHTML = "";
+
+    const title = document.createElement("h2");
+
+    title.textContent = tab.name;
+
+    title.style.fontSize = "22px";
+    title.style.marginBottom = "10px";
+
+    contentArea.appendChild(title);
+
+
+    const message = document.createElement("p");
+
+    message.textContent =
+        `Painel de ${tab.name}.`;
+
+    contentArea.appendChild(message);
+
+
+    // ======================================
+    // EMPRESA
+    // ======================================
+
+    if (tabId === "empresa") {
+
+        contentArea.innerHTML = `
+            <h2>Empresa</h2>
+
+            <p>
+                <strong>Empresa:</strong>
+                ${gameState.company.name || "Nenhuma"}
+            </p>
+
+            <p>
+                <strong>Marca:</strong>
+                ${gameState.company.brand || "Nenhuma"}
+            </p>
+
+            <p>
+                <strong>Dinheiro:</strong>
+                R$ ${formatMoney(gameState.company.money)}
+            </p>
+
+            <p>
+                <strong>Clientes:</strong>
+                ${gameState.company.customers.toLocaleString("pt-BR")}
+            </p>
+        `;
+    }
+
+
+    // ======================================
+    // OUTRAS ABAS
+    // ======================================
+
+    if (tabId === "rede") {
+        contentArea.innerHTML = `
+            <h2>Rede</h2>
+            <p>Gerencie sua infraestrutura de telecomunicações.</p>
+        `;
+    }
+
+    if (tabId === "clientes") {
+        contentArea.innerHTML = `
+            <h2>Clientes</h2>
+            <p>Gerencie seus clientes e assinantes.</p>
+        `;
+    }
+
+    if (tabId === "financas") {
+        contentArea.innerHTML = `
+            <h2>Finanças</h2>
+            <p>Veja receitas, despesas, lucros e dívidas.</p>
+        `;
+    }
+
+    if (tabId === "planos") {
+        contentArea.innerHTML = `
+            <h2>Planos</h2>
+            <p>Crie e gerencie seus planos.</p>
+        `;
+    }
+
+    if (tabId === "funcionarios") {
+        contentArea.innerHTML = `
+            <h2>Funcionários</h2>
+            <p>Contrate e gerencie sua equipe.</p>
+        `;
+    }
+
+    if (tabId === "marketing") {
+        contentArea.innerHTML = `
+            <h2>Marketing</h2>
+            <p>Crie campanhas para sua empresa.</p>
+        `;
+    }
+
+    if (tabId === "tecnologia") {
+        contentArea.innerHTML = `
+            <h2>Tecnologia</h2>
+            <p>Pesquise e desbloqueie novas tecnologias.</p>
+        `;
+    }
+
+    if (tabId === "estatisticas") {
+        contentArea.innerHTML = `
+            <h2>Estatísticas</h2>
+            <p>Veja os dados e gráficos da sua empresa.</p>
+        `;
+    }
+
+    if (tabId === "noticias") {
+        contentArea.innerHTML = `
+            <h2>Notícias</h2>
+            <p>Acompanhe os acontecimentos do mercado.</p>
+        `;
+    }
+
+    if (tabId === "ma") {
+        contentArea.innerHTML = `
+            <h2>M&A</h2>
+            <p>Compre, venda e faça fusões com empresas.</p>
+        `;
+    }
+}
+
+
+// ==========================================
+// FORMATAR DINHEIRO
+// ==========================================
+
+function formatMoney(value) {
+
+    return Number(value).toLocaleString(
+        "pt-BR",
+        {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2
+        }
+    );
+}
+
+
+// ==========================================
+// TELA PRINCIPAL
 // ==========================================
 
 function showMainMenu() {
+
     mainMenu.style.display = "flex";
+
     gameInterface.style.display = "none";
+
+    gameState.running = false;
 }
 
+
+// ==========================================
+// ABRIR JOGO
+// ==========================================
+
 function showGame() {
+
     mainMenu.style.display = "none";
-    gameInterface.style.display = "block";
+
+    gameInterface.style.display = "flex";
 
     gameState.running = true;
 
-    console.log("Telecom Simulator iniciado!");
+    createTabs();
+
+    console.log(
+        "Telecom Simulator iniciado!"
+    );
 }
 
 
@@ -85,19 +395,24 @@ function newGame() {
         return;
     }
 
-    gameState.company.name = companyName;
-    gameState.company.brand = brandName;
+    gameState.company.name =
+        companyName;
 
-    // Capital inicial
-    gameState.company.money = 1000000;
+    gameState.company.brand =
+        brandName;
 
-    // Clientes iniciais
-    gameState.company.customers = 0;
+    gameState.company.money =
+        1000000;
 
-    // Data inicial
+    gameState.company.customers =
+        0;
+
     gameState.date.day = 1;
     gameState.date.month = 1;
     gameState.date.year = 2026;
+
+    gameState.currentTab =
+        "empresa";
 
     saveGame();
 
@@ -107,7 +422,7 @@ function newGame() {
         `Empresa criada!\n\n` +
         `Empresa: ${companyName}\n` +
         `Marca: ${brandName}\n` +
-        `Capital inicial: R$ 1.000.000`
+        `Capital inicial: R$ 1.000.000,00`
     );
 }
 
@@ -118,27 +433,31 @@ function newGame() {
 
 function continueGame() {
 
-    const savedGame = localStorage.getItem(
-        "telecomSimulatorSave"
-    );
+    const savedGame =
+        localStorage.getItem(
+            "telecomSimulatorSave"
+        );
 
     if (!savedGame) {
-        alert("Nenhum jogo salvo encontrado.");
+
+        alert(
+            "Nenhum jogo salvo encontrado."
+        );
+
         return;
     }
 
     try {
 
-        const data = JSON.parse(savedGame);
+        const data =
+            JSON.parse(savedGame);
 
-        Object.assign(gameState, data);
+        Object.assign(
+            gameState,
+            data
+        );
 
         showGame();
-
-        alert(
-            `Jogo carregado!\n\n` +
-            `Empresa: ${gameState.company.brand}`
-        );
 
     } catch (error) {
 
@@ -152,7 +471,7 @@ function continueGame() {
 
 
 // ==========================================
-// SALVAR JOGO
+// SALVAR
 // ==========================================
 
 function saveGame() {
@@ -162,28 +481,17 @@ function saveGame() {
         JSON.stringify(gameState)
     );
 
-    console.log("Jogo salvo.");
+    console.log(
+        "Jogo salvo."
+    );
 }
 
 
 // ==========================================
-// CARREGAR JOGO
+// CARREGAR
 // ==========================================
 
 function loadGame() {
-
-    const savedGame = localStorage.getItem(
-        "telecomSimulatorSave"
-    );
-
-    if (!savedGame) {
-
-        alert(
-            "Não existe nenhum jogo salvo."
-        );
-
-        return;
-    }
 
     continueGame();
 }
@@ -197,13 +505,7 @@ function openSettings() {
 
     alert(
         "CONFIGURAÇÕES\n\n" +
-        "As configurações serão adicionadas aqui.\n\n" +
-        "• Volume\n" +
-        "• Música\n" +
-        "• Efeitos sonoros\n" +
-        "• Tela cheia\n" +
-        "• Qualidade gráfica\n" +
-        "• Velocidade do jogo"
+        "Este painel será desenvolvido posteriormente."
     );
 }
 
@@ -214,18 +516,14 @@ function openSettings() {
 
 function exitGame() {
 
-    const confirmExit = confirm(
-        "Tem certeza que deseja sair?"
-    );
+    const confirmExit =
+        confirm(
+            "Tem certeza que deseja sair?"
+        );
 
     if (!confirmExit) {
         return;
     }
-
-    // Em navegador não podemos fechar a aba
-    // livremente. Então voltamos para o menu.
-
-    gameState.running = false;
 
     showMainMenu();
 }
@@ -237,7 +535,8 @@ function exitGame() {
 
 function minimizeGame() {
 
-    gameState.minimized = !gameState.minimized;
+    gameState.minimized =
+        !gameState.minimized;
 
     if (gameState.minimized) {
 
@@ -267,18 +566,10 @@ function maximizeGame() {
     gameState.maximized =
         !gameState.maximized;
 
-    if (gameState.maximized) {
-
-        gameWindow.classList.add(
-            "maximized"
-        );
-
-    } else {
-
-        gameWindow.classList.remove(
-            "maximized"
-        );
-    }
+    gameWindow.classList.toggle(
+        "maximized",
+        gameState.maximized
+    );
 }
 
 
@@ -286,82 +577,55 @@ function maximizeGame() {
 // BOTÕES DO MENU
 // ==========================================
 
-if (playButton) {
+playButton?.addEventListener(
+    "click",
+    showGame
+);
 
-    playButton.addEventListener(
-        "click",
-        showGame
-    );
-}
+newGameButton?.addEventListener(
+    "click",
+    newGame
+);
 
-if (newGameButton) {
+continueButton?.addEventListener(
+    "click",
+    continueGame
+);
 
-    newGameButton.addEventListener(
-        "click",
-        newGame
-    );
-}
+loadButton?.addEventListener(
+    "click",
+    loadGame
+);
 
-if (continueButton) {
+settingsButton?.addEventListener(
+    "click",
+    openSettings
+);
 
-    continueButton.addEventListener(
-        "click",
-        continueGame
-    );
-}
-
-if (loadButton) {
-
-    loadButton.addEventListener(
-        "click",
-        loadGame
-    );
-}
-
-if (settingsButton) {
-
-    settingsButton.addEventListener(
-        "click",
-        openSettings
-    );
-}
-
-if (exitButton) {
-
-    exitButton.addEventListener(
-        "click",
-        exitGame
-    );
-}
+exitButton?.addEventListener(
+    "click",
+    exitGame
+);
 
 
 // ==========================================
 // CONTROLES DA JANELA
 // ==========================================
 
-if (minimizeButton) {
+minimizeButton?.addEventListener(
+    "click",
+    minimizeGame
+);
 
-    minimizeButton.addEventListener(
-        "click",
-        minimizeGame
-    );
-}
+maximizeButton?.addEventListener(
+    "click",
+    maximizeGame
+);
 
-if (maximizeButton) {
-
-    maximizeButton.addEventListener(
-        "click",
-        maximizeGame
-    );
-}
-
-if (closeButton) {
-
-    closeButton.addEventListener(
-        "click",
-        exitGame
-    );
-}
+closeButton?.addEventListener(
+    "click",
+    exitGame
+);
 
 
 // ==========================================
@@ -372,7 +636,7 @@ document.addEventListener(
     "keydown",
     function(event) {
 
-        // ESC volta para o menu
+        // ESC
         if (event.key === "Escape") {
 
             if (gameState.running) {
@@ -380,7 +644,8 @@ document.addEventListener(
             }
         }
 
-        // CTRL + S salva
+
+        // CTRL + S
         if (
             event.ctrlKey &&
             event.key.toLowerCase() === "s"
@@ -390,10 +655,6 @@ document.addEventListener(
 
             if (gameState.running) {
                 saveGame();
-
-                console.log(
-                    "Jogo salvo com Ctrl + S."
-                );
             }
         }
     }
@@ -403,8 +664,6 @@ document.addEventListener(
 // ==========================================
 // AUTOSAVE
 // ==========================================
-
-// Salva automaticamente a cada 60 segundos
 
 setInterval(
     function() {
