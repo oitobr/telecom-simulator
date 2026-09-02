@@ -1,144 +1,163 @@
 /* =========================================
-   TELECOM SIMULATOR — ESTILO PRINCIPAL
+   TELECOM SIMULATOR — DESIGN SYSTEM (v2.0)
    ========================================= */
 
+:root {
+    /* Cores Principais (Tema Tech / Dark Slate) */
+    --bg-app: #0f172a;
+    --bg-window: #1e293b;
+    --bg-surface: #334155;
+    --bg-surface-hover: #475569;
+    
+    /* Cores de Destaque */
+    --primary: #2563eb;
+    --primary-hover: #3b82f6;
+    --primary-light: rgba(37, 99, 235, 0.15);
+    --accent: #38bdf8;
+    
+    /* Status e Ações */
+    --danger: #ef4444;
+    --danger-hover: #dc2626;
+    --success: #22c55e;
+    --warning: #f59e0b;
+    
+    /* Tipografia */
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    
+    /* Bordas e Sombras */
+    --border-color: rgba(255, 255, 255, 0.08);
+    --radius-sm: 6px;
+    --radius-md: 10px;
+    --radius-lg: 16px;
+    --shadow-window: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    --shadow-btn: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Reset Global */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    image-rendering: pixelated;
+    user-select: none;
 }
 
-html,
-body {
+html, body {
     width: 100%;
     height: 100%;
+    overflow: hidden;
+    font-family: var(--font-family);
+    background-color: var(--bg-app);
+    color: var(--text-main);
 }
 
 body {
-    background: #222;
-    font-family: Arial, sans-serif;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
-    overflow: hidden;
+    background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
 }
-
 
 /* =========================================
    JANELA DO JOGO
    ========================================= */
 
 #game-window {
-    width: 960px;
-    height: 540px;
-
+    width: 1024px;
+    height: 640px;
     position: relative;
-
-    background: #eaf8ff;
-
-    border: 2px solid #3a8fd8;
-    border-radius: 6px;
-
+    background-color: var(--bg-window);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
     overflow: hidden;
-
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    box-shadow: var(--shadow-window);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
+#game-window.maximized {
+    width: 100vw !important;
+    height: 100vh !important;
+    border-radius: 0;
+}
 
 /* =========================================
-   BARRA SUPERIOR
+   BARRA SUPERIOR (TITLE BAR)
    ========================================= */
 
 #title-bar {
-    width: 100%;
-    height: 32px;
-
+    height: 40px;
+    background-color: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    background: linear-gradient(
-        to bottom,
-        #72c7f2 0%,
-        #3a91d1 45%,
-        #2677bd 100%
-    );
-
-    border-bottom: 1px solid #17639f;
-
-    color: white;
-
-    user-select: none;
+    padding: 0 12px;
 }
 
 #title {
-    padding-left: 10px;
-
-    font-size: 14px;
-    font-weight: bold;
-
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.45);
-}
-
-
-/* =========================================
-   CONTROLES DA JANELA
-   ========================================= */
-
-#window-controls {
-    height: 100%;
-
     display: flex;
     align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
 
-    gap: 2px;
-    padding-right: 3px;
+#title .app-icon {
+    width: 16px;
+    height: 16px;
+    color: var(--accent);
+}
+
+#window-controls {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 #window-controls button {
-    width: 27px;
-    height: 25px;
-
-    border: 1px solid #17639f;
-    border-radius: 4px;
-
-    background: linear-gradient(
-        to bottom,
-        #78c9f2,
-        #3589c8
-    );
-
-    color: white;
-
-    font-size: 15px;
-    font-weight: bold;
-
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-muted);
     cursor: pointer;
-
-    line-height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
 }
 
-#window-controls button:active {
-    filter: brightness(0.59);
+#window-controls button svg {
+    width: 14px;
+    height: 14px;
 }
 
+#window-controls button:hover {
+    background-color: var(--bg-surface);
+    color: var(--text-main);
+}
+
+#window-controls button.close-btn:hover {
+    background-color: var(--danger);
+    color: #ffffff;
+}
 
 /* =========================================
    ÁREA PRINCIPAL
    ========================================= */
 
 #game-content {
-    width: 100%;
-    height: calc(100% - 32px);
-
+    flex: 1;
     position: relative;
-
-    background: #eaf8ff;
+    overflow: hidden;
 }
-
 
 /* =========================================
    MENU PRINCIPAL
@@ -147,231 +166,285 @@ body {
 #main-menu {
     width: 100%;
     height: 100%;
-
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 40px 20px;
+    background: radial-gradient(circle at top, rgba(37, 99, 235, 0.1) 0%, transparent 60%);
+}
 
+.menu-brand {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.brand-icon {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    border-radius: var(--radius-md);
+    display: flex;
     align-items: center;
     justify-content: center;
-
-    gap: 10px;
+    margin-bottom: 16px;
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
 }
 
+.brand-icon svg {
+    width: 36px;
+    height: 36px;
+    color: #ffffff;
+}
+
+.game-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.game-title span {
+    color: var(--accent);
+}
+
+.game-subtitle {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+/* Ações / Botões do Menu */
+.menu-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    max-width: 280px;
+}
+
+.menu-footer {
+    font-size: 12px;
+    color: var(--text-muted);
+    opacity: 0.6;
+}
 
 /* =========================================
-   BOTÕES DO MENU — SPRITES
+   BOTÕES REUTILIZÁVEIS (.btn)
    ========================================= */
 
-#main-menu button {
-    width: 260px;
-    height: 60px;
-
-    border: none;
-    padding: 0;
-
-    background-color: transparent;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 260px 60px;
-
+.btn {
+    width: 100%;
+    height: 44px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 600;
     cursor: pointer;
-
-    font-size: 0;
-
-    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 18px;
+    gap: 12px;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: var(--shadow-btn);
 }
 
-
-/* JOGAR */
-
-#play-button {
-    background-image: url("../assets/buttons/menu/btn_jogar.png");
+.btn svg {
+    width: 18px;
+    height: 18px;
 }
 
-#play-button:active {
-    background-image: url("../assets/buttons/menu/btn_jogar_pressed.png");
+.btn-primary {
+    background-color: var(--primary);
+    color: #ffffff;
 }
 
-
-/* NOVO JOGO */
-
-#new-game-button {
-    background-image: url("../assets/buttons/menu/btn_novo_jogo.png");
+.btn-primary:hover {
+    background-color: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(37, 99, 235, 0.35);
 }
 
-#new-game-button:active {
-    background-image: url("../assets/buttons/menu/btn_novo_jogo_pressed.png");
+.btn-secondary {
+    background-color: var(--bg-surface);
+    color: var(--text-main);
+    border-color: var(--border-color);
 }
 
-
-/* CONTINUAR */
-
-#continue-button {
-    background-image: url("../assets/buttons/menu/btn_continuar.png");
+.btn-secondary:hover {
+    background-color: var(--bg-surface-hover);
+    transform: translateY(-2px);
 }
 
-#continue-button:active {
-    background-image: url("../assets/buttons/menu/btn_continuar_pressed.png");
+.btn-danger {
+    background-color: rgba(239, 68, 68, 0.1);
+    color: var(--danger);
+    border-color: rgba(239, 68, 68, 0.2);
 }
 
-
-/* CARREGAR JOGO */
-
-#load-button {
-    background-image: url("../assets/buttons/menu/btn_carregar_jogo.png");
+.btn-danger:hover {
+    background-color: var(--danger);
+    color: #ffffff;
+    transform: translateY(-2px);
 }
 
-#load-button:active {
-    background-image: url("../assets/buttons/menu/btn_carregar_jogo_pressed.png");
+.btn:active {
+    transform: translateY(0) !important;
 }
-
-
-/* CONFIGURAÇÕES */
-
-#settings-button {
-    background-image: url("../assets/buttons/menu/btn_configuracoes.png");
-}
-
-#settings-button:active {
-    background-image: url("../assets/buttons/menu/btn_configuracoes_pressed.png");
-}
-
-
-/* SAIR */
-
-#exit-button {
-    background-image: url("../assets/buttons/menu/btn_sair.png");
-}
-
-#exit-button:active {
-    background-image: url("../assets/buttons/menu/btn_sair_pressed.png");
-}
-
 
 /* =========================================
-   INTERFACE DO JOGO
+   INTERFACE DO JOGO (HUD & PAINEL)
    ========================================= */
 
 #game-interface {
     width: 100%;
     height: 100%;
-
-    display: none;
-
+    display: flex;
     flex-direction: column;
 }
 
-
-/* =========================================
-   ABAS
-   ========================================= */
-
-#navigation-tabs {
-    width: 100%;
-    height: 45px;
-
+/* HUD Superior */
+#hud-bar {
+    height: 52px;
+    background-color: rgba(15, 23, 42, 0.6);
+    border-bottom: 1px solid var(--border-color);
     display: flex;
     align-items: center;
-
-    gap: 5px;
-    padding: 0 6px;
-
-    background: #d7f2ff;
-
-    border-bottom: 2px solid #8bc9e8;
-
-    overflow-x: auto;
+    justify-content: space-between;
+    padding: 0 16px;
 }
 
+.hud-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    font-weight: 600;
+}
 
-/* ABA */
+.hud-item svg {
+    width: 16px;
+    height: 16px;
+    color: var(--accent);
+}
 
-.navigation-tab {
-    width: 150px;
-    height: 45px;
+.hud-stats {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    background-color: var(--bg-app);
+    padding: 6px 16px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+}
 
-    flex: 0 0 150px;
+.hud-item.money span {
+    color: var(--success);
+}
 
-    border: none;
-    padding: 0;
-
-    background-color: transparent;
-
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 150px 45px;
-
+.icon-btn {
+    width: 34px;
+    height: 34px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border-color);
+    background-color: var(--bg-surface);
+    color: var(--text-main);
     cursor: pointer;
-
-    font-size: 0;
-
-    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
 }
 
-
-/* ABA SELECIONADA */
-
-.navigation-tab.active {
-    filter: brightness(0.85);
-
-    transform: translateY(1px);
+.icon-btn:hover {
+    background-color: var(--bg-surface-hover);
 }
 
-
-/* =========================================
-   ÁREA DE CONTEÚDO
-   ========================================= */
-
-#content-area {
+/* Corpo da Interface (Abas + Conteúdo) */
+.interface-body {
     flex: 1;
-
-    padding: 10px;
-
-    background: #f5fcff;
-
+    display: flex;
     overflow: hidden;
 }
 
-
-/* =========================================
-   BOTÕES DE AÇÃO — SPRITES
-   ========================================= */
-
-.action-button {
-    width: 130px;
-    height: 42px;
-
-    border: none;
-    padding: 0;
-
-    background-color: transparent;
-
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 130px 42px;
-
-    cursor: pointer;
-
-    font-size: 0;
-
-    outline: none;
+/* Sidebar de Navegação (Abas) */
+#navigation-tabs {
+    width: 200px;
+    background-color: rgba(15, 23, 42, 0.4);
+    border-right: 1px solid var(--border-color);
+    padding: 12px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
 }
 
+.tab-btn {
+    width: 100%;
+    height: 40px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-muted);
+    font-family: var(--font-family);
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
 
-/* =========================================
-   RESPONSIVIDADE
-   ========================================= */
+.tab-btn svg {
+    width: 16px;
+    height: 16px;
+}
 
-@media (max-width: 980px) {
+.tab-btn:hover {
+    background-color: var(--bg-surface);
+    color: var(--text-main);
+}
 
-    #game-window {
-        transform: scale(
-            min(
-                calc(100vw / 964),
-                calc(100vh / 544)
-            )
-        );
+.tab-btn.active {
+    background-color: var(--primary-light);
+    color: var(--accent);
+    border-left: 3px solid var(--accent);
+}
 
-        transform-origin: center;
-    }
+/* Área de Conteúdo */
+#content-area {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    background-color: var(--bg-window);
+}
+
+.tab-pane {
+    display: none;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+/* Customização da Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--bg-surface);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--bg-surface-hover);
 }
