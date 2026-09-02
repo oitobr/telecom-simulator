@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Telecom Simulator</title>
 
     <link rel="stylesheet" href="css/style.css">
@@ -10,38 +11,83 @@
 
 <body>
 
-    <main id="game-window">
+    <!-- JANELA PRINCIPAL -->
+    <div id="game-window">
 
-        <!-- Barra superior -->
-        <header id="title-bar">
-            <div id="game-title">
+        <!-- BARRA SUPERIOR -->
+        <div id="title-bar">
+
+            <div id="title">
                 Telecom Simulator
             </div>
 
-            <div id="window-buttons">
+            <div id="window-controls">
                 <button id="minimize">−</button>
                 <button id="maximize">□</button>
                 <button id="close">×</button>
             </div>
-        </header>
 
-        <!-- Conteúdo do jogo -->
-        <section id="game-content">
+        </div>
 
-            <!-- Menu principal -->
+
+        <!-- ÁREA PRINCIPAL -->
+        <div id="game-content">
+
+            <!-- MENU PRINCIPAL -->
             <div id="main-menu">
-                <!-- Botões principais serão colocados aqui -->
+
+                <button id="play-button">
+                    Jogar
+                </button>
+
+                <button id="new-game-button">
+                    Novo Jogo
+                </button>
+
+                <button id="continue-button">
+                    Continuar
+                </button>
+
+                <button id="load-button">
+                    Carregar Jogo
+                </button>
+
+                <button id="settings-button">
+                    Configurações
+                </button>
+
+                <button id="exit-button">
+                    Sair
+                </button>
+
             </div>
 
-            <!-- Área do jogo -->
-            <div id="game-screen">
-                <!-- Abas e conteúdo serão colocados aqui -->
+
+            <!-- INTERFACE DO JOGO -->
+            <div id="game-interface">
+
+                <!-- ABAS -->
+                <nav id="navigation-tabs">
+                    <!-- As abas com seus sprites entrarão aqui -->
+                </nav>
+
+
+                <!-- CONTEÚDO -->
+                <main id="content-area">
+
+                    <!-- Conteúdo de cada aba aparecerá aqui -->
+
+                </main>
+
             </div>
 
-        </section>
+        </div>
 
-    </main>
+    </div>
 
+
+    <!-- JAVASCRIPT -->
     <script src="js/game.js"></script>
+
 </body>
 </html>
