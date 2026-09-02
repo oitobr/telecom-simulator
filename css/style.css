@@ -1,1 +1,345 @@
+/* =========================================
+   TELECOM SIMULATOR — ESTILO PRINCIPAL
+   ========================================= */
 
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    image-rendering: pixelated;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: #222;
+    font-family: Arial, sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   JANELA DO JOGO
+   ========================================= */
+
+#game-window {
+    width: 960px;
+    height: 540px;
+
+    position: relative;
+
+    background: #eaf8ff;
+
+    border: 2px solid #3a8fd8;
+    border-radius: 6px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 4px 12px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================
+   BARRA SUPERIOR
+   ========================================= */
+
+#title-bar {
+    width: 100%;
+    height: 32px;
+
+    background: linear-gradient(
+        to bottom,
+        #72c7f2 0%,
+        #3a91d1 45%,
+        #2677bd 100%
+    );
+
+    border-bottom: 1px solid #17639f;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    color: white;
+
+    user-select: none;
+}
+
+
+/* TÍTULO */
+
+#title {
+    padding-left: 10px;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.45);
+}
+
+
+/* =========================================
+   BOTÕES DA JANELA
+   ========================================= */
+
+#window-controls {
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+
+    gap: 2px;
+
+    padding-right: 3px;
+}
+
+#window-controls button {
+    width: 27px;
+    height: 25px;
+
+    border: 1px solid #17639f;
+    border-radius: 4px;
+
+    background: linear-gradient(
+        to bottom,
+        #78c9f2,
+        #3589c8
+    );
+
+    color: white;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    line-height: 20px;
+}
+
+#window-controls button:active {
+    filter: brightness(0.59);
+}
+
+
+/* =========================================
+   ÁREA PRINCIPAL
+   ========================================= */
+
+#game-content {
+    width: 100%;
+    height: calc(100% - 32px);
+
+    position: relative;
+
+    background: #eaf8ff;
+}
+
+
+/* =========================================
+   MENU PRINCIPAL
+   ========================================= */
+
+#main-menu {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 10px;
+}
+
+
+/* BOTÕES PRINCIPAIS */
+
+#main-menu button {
+    width: 260px;
+    height: 60px;
+
+    border: 2px solid #2677bd;
+    border-radius: 8px;
+
+    background: linear-gradient(
+        to bottom,
+        #8bd7f7,
+        #3d9bd5
+    );
+
+    color: white;
+
+    font-size: 18px;
+    font-weight: bold;
+
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.4);
+
+    cursor: pointer;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        0 2px 3px rgba(0, 0, 0, 0.25);
+}
+
+
+/* EFEITO DE BOTÃO CLICADO */
+
+#main-menu button:active {
+    filter: brightness(0.59);
+
+    transform: translateY(1px);
+}
+
+
+/* =========================================
+   INTERFACE DO JOGO
+   ========================================= */
+
+#game-interface {
+    width: 100%;
+    height: 100%;
+
+    display: none;
+
+    flex-direction: column;
+}
+
+
+/* =========================================
+   ABAS
+   ========================================= */
+
+#navigation-tabs {
+    width: 100%;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 5px;
+
+    padding: 0 6px;
+
+    background: #d7f2ff;
+
+    border-bottom: 2px solid #8bc9e8;
+
+    overflow-x: auto;
+}
+
+
+/* ABA */
+
+.navigation-tab {
+    width: 150px;
+    height: 45px;
+
+    flex: 0 0 150px;
+
+    border: 1px solid #4d9dcc;
+    border-radius: 6px 6px 0 0;
+
+    background: #eaf8ff;
+
+    color: #164b6b;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/* ABA SELECIONADA */
+
+.navigation-tab.active {
+    background: #5bb8e8;
+
+    color: white;
+
+    border-color: #287caf;
+}
+
+
+/* =========================================
+   ÁREA DE CONTEÚDO
+   ========================================= */
+
+#content-area {
+    flex: 1;
+
+    padding: 10px;
+
+    background: #f5fcff;
+
+    overflow: hidden;
+}
+
+
+/* =========================================
+   BOTÕES DE AÇÃO
+   ========================================= */
+
+.action-button {
+    width: 130px;
+    height: 42px;
+
+    border: 1px solid #468eb7;
+    border-radius: 6px;
+
+    background: linear-gradient(
+        to bottom,
+        #ffffff,
+        #c9eafa
+    );
+
+    color: #174c6b;
+
+    font-size: 14px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+
+/* BOTÃO CLICADO */
+
+.action-button:active {
+    filter: brightness(0.59);
+
+    transform: translateY(1px);
+}
+
+
+/* =========================================
+   RESPONSIVIDADE
+   ========================================= */
+
+@media (max-width: 980px) {
+
+    #game-window {
+        transform: scale(
+            min(
+                calc(100vw / 964),
+                calc(100vh / 544)
+            )
+        );
+
+        transform-origin: center;
+    }
+}
