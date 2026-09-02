@@ -1,5 +1,6 @@
 import { TABS_CONFIG } from '../config.js';
 import { gameState, Format } from '../state.js';
+import { Storage } from '../storage.js';
 import { HUD } from './hud.js';
 
 export const Tabs = {
@@ -12,9 +13,10 @@ export const Tabs = {
 
         TABS_CONFIG.forEach(tab => {
             const btn = document.createElement("button");
-            btn.className = `tab-btn ${tab.id === gameState.currentTab ? "active" : ""}`;
+            btn.className = `navigation-tab ${tab.id === gameState.currentTab ? "active" : ""}`;
             btn.dataset.tab = tab.id;
-            btn.innerHTML = `<span>${tab.name}</span>`;
+            btn.title = tab.name;
+            btn.style.backgroundImage = `url("${tab.image}")`;
 
             btn.addEventListener("click", () => this.switchTab(tab.id));
             this.container.appendChild(btn);
@@ -24,8 +26,15 @@ export const Tabs = {
     },
 
     switchTab(tabId) {
+        // Se clicar na aba de Salvar, executa o Save sem trocar permanentemente a visualização
+        if (tabId === "salvar") {
+            Storage.save();
+            alert("Jogo salvo com sucesso!");
+            return;
+        }
+
         gameState.currentTab = tabId;
-        document.querySelectorAll("#navigation-tabs .tab-btn").forEach(btn => {
+        document.querySelectorAll("#navigation-tabs .navigation-tab").forEach(btn => {
             btn.classList.toggle("active", btn.dataset.tab === tabId);
         });
         this.renderContent();
@@ -34,20 +43,24 @@ export const Tabs = {
     renderContent() {
         if (!this.content) return;
 
+        const currentTabObj = TABS_CONFIG.find(t => t.id === gameState.currentTab);
+        const title = currentTabObj ? currentTabObj.name : "Painel";
+
         if (gameState.currentTab === "empresa") {
             this.content.innerHTML = `
-                <h2>Visão Geral</h2>
-                <p><strong>Empresa:</strong> ${gameState.company.name}</p>
-                <p><strong>Marca:</strong> ${gameState.company.brand}</p>
-                <p><strong>Clientes Ativos:</strong> ${Format.number(gameState.company.customers)}</p>
-                <p><strong>Capital:</strong> ${Format.currency(gameState.company.money)}</p>
+                <h2>${title}</h2>
+                <p><strong>Empresa:</strong> ${gameState.company.name || "Nenhuma"}</p>
+                <p><strong>Marca:</strong> ${gameState.company.brand || "Nenhuma"}</p>
+                <p><strong>Dinheiro:</strong> ${Format.currency(gameState.company.money)}</p>
+                <p><strong>Clientes:</strong> ${Format.number(gameState.company.customers)}</p>
             `;
-        } else if (gameState.currentTab === "rede") {
+        } else if (gameState.currentTab === "torres") {
             this.content.innerHTML = `
-                <h2>Infraestrutura de Rede</h2>
-                <p>Torres Ativas: ${gameState.network.antennas}</p>
-                <p>Capacidade: ${Format.number(gameState.network.capacity)} clientes</p>
-                <button id="btn-buy-antenna">Comprar Torre (R$ 50.000,00)</button>
+                <h2>Torres de Sinal</h2>
+                <p>Gerencie suas torres de transmissão.</p>
+                <p><strong>Torres Ativas:</strong> ${gameState.network.antennas}</p>
+                <p><strong>Capacidade de Clientes:</strong> ${Format.number(gameState.network.capacity)}</p>
+                <button id="btn-buy-antenna" class="btn">Comprar Torre (R$ 50.000,00)</button>
             `;
 
             document.getElementById("btn-buy-antenna")?.addEventListener("click", () => {
@@ -62,8 +75,10 @@ export const Tabs = {
                 }
             });
         } else {
-            const currentTabObj = TABS_CONFIG.find(t => t.id === gameState.currentTab);
-            this.content.innerHTML = `<h2>${currentTabObj ? currentTabObj.name : "Painel"}</h2><p>Módulo em desenvolvimento.</p>`;
+            this.content.innerHTML = `
+                <h2>${title}</h2>
+                <p>Painel de ${title}. Conteúdo em desenvolvimento.</p>
+            `;
         }
     }
 };
