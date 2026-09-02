@@ -3,91 +3,158 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Telecom Simulator</title>
+
+    <!-- Fonte Moderna (Plus Jakarta Sans) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Ícones Vetoriais em SVG (Lucide Icons) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
     <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 
-    <!-- JANELA PRINCIPAL -->
+    <!-- JANELA PRINCIPAL DO JOGO -->
     <div id="game-window">
 
-        <!-- BARRA SUPERIOR -->
-        <div id="title-bar">
-
+        <!-- BARRA SUPERIOR DA JANELA -->
+        <header id="title-bar">
             <div id="title">
-                Telecom Simulator
+                <i data-lucide="radio-tower" class="app-icon"></i>
+                <span>Telecom Simulator</span>
             </div>
 
             <div id="window-controls">
-                <button id="minimize">−</button>
-                <button id="maximize">□</button>
-                <button id="close">×</button>
+                <button id="minimize" title="Minimizar"><i data-lucide="minus"></i></button>
+                <button id="maximize" title="Maximizar"><i data-lucide="square"></i></button>
+                <button id="close" class="close-btn" title="Fechar"><i data-lucide="x"></i></button>
             </div>
+        </header>
 
-        </div>
-
-
-        <!-- ÁREA PRINCIPAL -->
+        <!-- ÁREA DE CONTEÚDO DA JANELA -->
         <div id="game-content">
 
             <!-- MENU PRINCIPAL -->
-            <div id="main-menu">
+            <section id="main-menu">
+                <div class="menu-brand">
+                    <div class="brand-icon">
+                        <i data-lucide="radio-tower"></i>
+                    </div>
+                    <h1 class="game-title">TELECOM <span>SIMULATOR</span></h1>
+                    <p class="game-subtitle">Gerencie e expanda seu império de telecomunicações</p>
+                </div>
 
-                <button id="play-button">
-                    Jogar
-                </button>
+                <nav class="menu-actions">
+                    <button id="continue-button" class="btn btn-primary">
+                        <i data-lucide="play"></i>
+                        <span>Continuar</span>
+                    </button>
 
-                <button id="new-game-button">
-                    Novo Jogo
-                </button>
+                    <button id="new-game-button" class="btn btn-secondary">
+                        <i data-lucide="plus-circle"></i>
+                        <span>Novo Jogo</span>
+                    </button>
 
-                <button id="continue-button">
-                    Continuar
-                </button>
+                    <button id="load-button" class="btn btn-secondary">
+                        <i data-lucide="folder-open"></i>
+                        <span>Carregar Jogo</span>
+                    </button>
 
-                <button id="load-button">
-                    Carregar Jogo
-                </button>
+                    <button id="settings-button" class="btn btn-secondary">
+                        <i data-lucide="settings"></i>
+                        <span>Configurações</span>
+                    </button>
 
-                <button id="settings-button">
-                    Configurações
-                </button>
-
-                <button id="exit-button">
-                    Sair
-                </button>
-
-            </div>
-
-
-            <!-- INTERFACE DO JOGO -->
-            <div id="game-interface">
-
-                <!-- ABAS -->
-                <nav id="navigation-tabs">
-                    <!-- As abas com seus sprites entrarão aqui -->
+                    <button id="exit-button" class="btn btn-danger">
+                        <i data-lucide="log-out"></i>
+                        <span>Sair</span>
+                    </button>
                 </nav>
 
+                <footer class="menu-footer">
+                    <span>v2.0 &bull; 2026</span>
+                </footer>
+            </section>
 
-                <!-- CONTEÚDO -->
-                <main id="content-area">
+            <!-- INTERFACE DO JOGO -->
+            <section id="game-interface" style="display: none;">
 
-                    <!-- Conteúdo de cada aba aparecerá aqui -->
+                <!-- HUD SUPERIOR (Barra de Status do Estado do Jogo) -->
+                <header id="hud-bar">
+                    <div class="hud-item company-info">
+                        <i data-lucide="building-2"></i>
+                        <span id="display-company-name">Sua Empresa</span>
+                    </div>
 
-                </main>
+                    <div class="hud-stats">
+                        <div class="hud-item money">
+                            <i data-lucide="wallet"></i>
+                            <span id="display-money">R$ 0,00</span>
+                        </div>
 
-            </div>
+                        <div class="hud-item customers">
+                            <i data-lucide="users"></i>
+                            <span id="display-customers">0</span> clientes
+                        </div>
+
+                        <div class="hud-item date">
+                            <i data-lucide="calendar"></i>
+                            <span id="display-date">01/01/2026</span>
+                        </div>
+                    </div>
+
+                    <div class="hud-controls">
+                        <button id="pause-btn" class="icon-btn" title="Pausar/Retomar (Espaço)">
+                            <i data-lucide="pause"></i>
+                        </button>
+                    </div>
+                </header>
+
+                <!-- CORPO DA INTERFACE -->
+                <div class="interface-body">
+                    <!-- NAVEGAÇÃO POR ABAS -->
+                    <nav id="navigation-tabs">
+                        <button class="tab-btn active" data-tab="overview">
+                            <i data-lucide="layout-dashboard"></i>
+                            <span>Visão Geral</span>
+                        </button>
+                        <button class="tab-btn" data-tab="network">
+                            <i data-lucide="tower-control"></i>
+                            <span>Infraestrutura</span>
+                        </button>
+                        <button class="tab-btn" data-tab="plans">
+                            <i data-lucide="receipt"></i>
+                            <span>Planos & Tarifas</span>
+                        </button>
+                        <button class="tab-btn" data-tab="finance">
+                            <i data-lucide="trending-up"></i>
+                            <span>Finanças</span>
+                        </button>
+                    </nav>
+
+                    <!-- ÁREA DE CONTEÚDO PRINCIPAL DAS ABAS -->
+                    <main id="content-area">
+                        <div id="tab-overview" class="tab-pane active">
+                            <h2>Painel de Controle</h2>
+                            <p>Bem-vindo ao sistema de gerenciamento da sua operadora.</p>
+                        </div>
+                    </main>
+                </div>
+
+            </section>
 
         </div>
 
     </div>
 
-
     <!-- JAVASCRIPT -->
     <script src="js/game.js"></script>
-
+    <script>
+        // Inicializa a renderização dos ícones Lucide
+        lucide.createIcons();
+    </script>
 </body>
 </html>
